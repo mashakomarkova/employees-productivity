@@ -3,6 +3,7 @@ package com.nure.komarkova.backend.entity;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 @Entity
 public class Workflow {
@@ -10,11 +11,13 @@ public class Workflow {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private Date date;
+    private Date workDate;
     private Time startTime;
     private Time endTime;
     @ManyToOne
     private Employee employee;
+    @OneToMany
+    private List<CommodityRealization> commodityRealizations;
 
     public Long getId() {
         return id;
@@ -24,12 +27,12 @@ public class Workflow {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getWorkDate() {
+        return workDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setWorkDate(Date workDate) {
+        this.workDate = workDate;
     }
 
     public Time getStartTime() {
@@ -54,5 +57,13 @@ public class Workflow {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public List<CommodityRealization> getCommodityRealizations() {
+        return commodityRealizations;
+    }
+
+    public void setCommodityRealizations(List<CommodityRealization> commodityRealizations) {
+        this.commodityRealizations = commodityRealizations;
     }
 }

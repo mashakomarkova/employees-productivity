@@ -1,7 +1,11 @@
 package com.nure.komarkova.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nure.komarkova.backend.bean.EmployeeBean;
+
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 public class Employee {
@@ -13,10 +17,21 @@ public class Employee {
     private String lastName;
     private String gender;
     private Date dateOfBirth;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Position position;
+
+    public Employee() {
+    }
+
+    public Employee(EmployeeBean employeeBean) {
+        this.firstName = employeeBean.getFirstName();
+        this.lastName = employeeBean.getLastName();
+        this.gender = employeeBean.getGender();
+        this.dateOfBirth = Date.valueOf(employeeBean.getDateOfBirth());
+        this.position = employeeBean.getPosition();
+    }
 
     public Long getId() {
         return id;

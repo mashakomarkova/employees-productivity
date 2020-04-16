@@ -14,4 +14,6 @@ public interface UserService {
     List<User> findAllUsers();
 
     User findUserByEmail(String email);
+
+    User findUserById(Long id);
 }
