@@ -14,6 +14,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -37,21 +39,11 @@ public class UserController {
         user.setEmail(registerBean.getEmail());
         user.setPassword(new Util().encryptString(registerBean.getPassword()));
         Role role = userService.findClientRole();
-        user.setRole(role);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+        user.setRoles(roles);
         userService.saveUser(user);
         return HttpStatus.OK;
-    }
-
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @PostMapping("/signIn")
-    public HttpStatus signIn(@RequestBody String data) {
-        User user = new Gson().fromJson(data, User.class);
-        User userToCheck = userService.findUserByEmail(user.getEmail());
-        if (userToCheck != null && new Util().encryptString(user.getPassword()).equals(userToCheck.getPassword())) {
-            return HttpStatus.OK;
-        } else {
-            return HttpStatus.BAD_REQUEST;
-        }
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

@@ -50,6 +50,13 @@ public class WorkflowController {
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/findWorkflows/{date}")
+    public ResponseEntity<List<Workflow>> findWorkflowsByDate(@PathVariable String date) {
+        List<Workflow> allWorkflows = workflowService.findWorkflowsByDate(Date.valueOf(date));
+        return new ResponseEntity<>(allWorkflows, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/findGenderProductivity")
     public ResponseEntity<GenderProductivity> findGenderProductivity() {
         List<Workflow> allWorkflows = workflowService.findAllWorkFlows();
