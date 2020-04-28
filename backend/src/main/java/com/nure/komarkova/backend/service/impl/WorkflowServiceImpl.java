@@ -2,6 +2,7 @@ package com.nure.komarkova.backend.service.impl;
 
 import com.nure.komarkova.backend.bean.GenderProductivity;
 import com.nure.komarkova.backend.bean.TotalProductivityBean;
+import com.nure.komarkova.backend.bean.WorkflowEmployeesBean;
 import com.nure.komarkova.backend.entity.CommodityRealization;
 import com.nure.komarkova.backend.entity.Workflow;
 import com.nure.komarkova.backend.repository.WorkflowRepository;
@@ -9,6 +10,7 @@ import com.nure.komarkova.backend.service.WorkflowService;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -66,6 +68,25 @@ public class WorkflowServiceImpl implements WorkflowService {
         genderProductivity.setFemaleProductivity(femaleProductivity);
         genderProductivity.setMaleProductivity(maleProductivity);
         return genderProductivity;
+    }
+
+    @Override
+    public List<WorkflowEmployeesBean> findWorkflowsByDates(Date dateFrom, Date dateTo) {
+        List<Workflow> workflows = workflowRepository.findAllByWorkDateBetween(dateFrom, dateTo);
+        List<WorkflowEmployeesBean> workflowEmployeesBeans = new ArrayList<>();
+        for (Workflow workflow : workflows) {
+            WorkflowEmployeesBean workflowEmployeesBean = new WorkflowEmployeesBean(workflow.getWorkDate());
+            if (workflowEmployeesBeans.contains(workflowEmployeesBean)) {
+                WorkflowEmployeesBean employeesBeanToAdd =
+                        workflowEmployeesBeans.get(workflowEmployeesBeans.indexOf(workflowEmployeesBean));
+                double productivity = employeesBeanToAdd.getProductivity()+countProductivity(workflow);
+                employeesBeanToAdd.setProductivity(productivity);
+                workflowEmployeesBeans.set(workflowEmployeesBeans.indexOf(workflowEmployeesBean),employeesBeanToAdd);
+            } else {
+                workflowEmployeesBeans.add(new WorkflowEmployeesBean(workflow.getWorkDate(), countProductivity(workflow)));
+            }
+        }
+        return workflowEmployeesBeans;
     }
 
     private double countProductivity(Workflow workflow) {

@@ -11,4 +11,6 @@ public interface WorkflowRepository extends JpaRepository<Workflow, Long> {
     List<Workflow> findByWorkDate(Date workDate);
 
     List<Workflow> findByEmployee_Id(Long id);
+
+    List<Workflow> findAllByWorkDateBetween(Date dateFrom, Date dateTo);
 }

@@ -2,6 +2,7 @@ package com.nure.komarkova.backend.controller;
 
 import com.nure.komarkova.backend.bean.GenderProductivity;
 import com.nure.komarkova.backend.bean.TotalProductivityBean;
+import com.nure.komarkova.backend.bean.WorkflowEmployeesBean;
 import com.nure.komarkova.backend.entity.Workflow;
 import com.nure.komarkova.backend.service.WorkflowService;
 import org.springframework.http.HttpStatus;
@@ -62,5 +63,12 @@ public class WorkflowController {
         List<Workflow> allWorkflows = workflowService.findAllWorkFlows();
         GenderProductivity genderProductivity = workflowService.findGenderProductivity(allWorkflows);
         return new ResponseEntity<>(genderProductivity, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/findWorkflowsByDates")
+    public ResponseEntity<List<WorkflowEmployeesBean>> findByDates(@RequestParam String dateFrom, @RequestParam String dateTo) {
+        List<WorkflowEmployeesBean> workflowBeans = workflowService.findWorkflowsByDates(Date.valueOf(dateFrom), Date.valueOf(dateTo));
+        return new ResponseEntity<>(workflowBeans, HttpStatus.OK);
     }
 }

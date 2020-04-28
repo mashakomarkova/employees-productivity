@@ -49,7 +49,8 @@ public class SpringSecurityConfigurationBasicAuth extends WebSecurityConfigurerA
                         "/findAllWorkflows", "/findWorkFlow/{id}", "/findTotalProductivity",
                         "/findTotalProductivity/{date}", "/findWorkflows/{date}", "/findGenderProductivity")
                 .hasRole("MANAGER")
-                .antMatchers("/viewAllEmployees", "/viewAllEmployees/{id}", "/allPositions","/createPosition")
+                .antMatchers("/viewAllEmployees", "/viewAllEmployees/{id}", "/allPositions","/createPosition",
+                        "/findWorkflowsByDates")
                 .hasAnyRole("ADMIN", "MANAGER")
                 .anyRequest().authenticated();
         // .and().apply(new JwtConfigurer(jwtTokenProvider));
